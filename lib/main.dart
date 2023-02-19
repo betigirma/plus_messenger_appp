@@ -32,6 +32,11 @@ class Mainpage extends StatefulWidget {
 }
 
 class _MainpageState extends State<Mainpage> {
+  Icon fab = const Icon(
+    Icons.create,
+  );
+
+  int fabIconNumber = 0;
   int _currentIndex = 0;
   late String _title;
 
@@ -52,7 +57,12 @@ class _MainpageState extends State<Mainpage> {
     final result = await showMenu(
         context: context,
         position: RelativeRect.fromRect(
-            Rect.fromLTWH(_tapPosition.dx, _tapPosition.dy, 20, 20),
+            Rect.fromLTWH(
+              _tapPosition.dx,
+              _tapPosition.dy,
+              15,
+              15,
+            ),
             Rect.fromLTWH(0, 0, overlay!.paintBounds.size.width,
                 overlay.paintBounds.size.height)),
         items: [
@@ -113,15 +123,6 @@ class _MainpageState extends State<Mainpage> {
         ]);
   }
 
-  final List<Widget> _children = [
-    Title(color: Colors.white, child: const Text('All chats')),
-    Title(color: Colors.white, child: const Text('Contacts')),
-    Title(color: Colors.white, child: const Text('Groups')),
-    Title(color: Colors.white, child: const Text('Unread')),
-    Title(color: Colors.white, child: const Text('Channel')),
-    Title(color: Colors.white, child: const Text('Bots')),
-  ];
-
   @override
   initState() {
     super.initState();
@@ -151,7 +152,7 @@ class _MainpageState extends State<Mainpage> {
                     onLongPress: () {
                       _showContextMenu(context);
                     },
-                    child: const Icon(Icons.category),
+                    child: const Icon(Icons.widgets_outlined),
                   ),
                 ),
                 Tab(
@@ -162,7 +163,7 @@ class _MainpageState extends State<Mainpage> {
                     onLongPress: () {
                       _showContextMenu(context);
                     },
-                    child: const Icon(Icons.folder_open),
+                    child: const Icon(Icons.person_outline),
                   ),
                 ),
                 Tab(
@@ -173,7 +174,7 @@ class _MainpageState extends State<Mainpage> {
                     onLongPress: () {
                       _showContextMenu(context);
                     },
-                    child: const Icon(Icons.folder_open),
+                    child: const Icon(Icons.people_outline_outlined),
                   ),
                 ),
                 Tab(
@@ -184,7 +185,7 @@ class _MainpageState extends State<Mainpage> {
                     onLongPress: () {
                       _showContextMenu(context);
                     },
-                    child: const Icon(Icons.chat_bubble_outline_rounded),
+                    child: const Icon(Icons.wechat_rounded),
                   ),
                 ),
                 Tab(
@@ -195,7 +196,7 @@ class _MainpageState extends State<Mainpage> {
                     onLongPress: () {
                       _showContextMenu(context);
                     },
-                    child: const Icon(Icons.folder_open),
+                    child: const Icon(Icons.volume_down),
                   ),
                 ),
                 Tab(
@@ -206,7 +207,7 @@ class _MainpageState extends State<Mainpage> {
                     onLongPress: () {
                       _showContextMenu(context);
                     },
-                    child: const Icon(Icons.folder_open),
+                    child: const Icon(Icons.balcony),
                   ),
                 )
               ],
@@ -252,485 +253,509 @@ class _MainpageState extends State<Mainpage> {
           body: TabBarView(children: [
             ConstrainedBox(
               constraints: const BoxConstraints(maxHeight: 50),
-              child: FractionallySizedBox(
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 10),
-                  child: ListView.separated(
-                      itemBuilder: (ctx, i) {
-                        return ListTile(
-                            leading: CircleAvatar(
-                              radius: 28,
-                              backgroundImage: AssetImage(items[i].imgPath),
-                            ),
-                            title: items[i].status
-                                ? Text(
-                                    items[i].name,
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.bold),
-                                  )
-                                : Row(
-                                    children: [
-                                      Text(
-                                        items[i].name,
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      Icon(
-                                        Icons.volume_mute,
-                                        size: 18,
-                                        color: Colors.grey[900],
-                                      )
-                                    ],
-                                  ),
-                            subtitle: Text(
-                              items[i].message,
-                              style: const TextStyle(color: Colors.black),
-                            ),
-                            // ignore: unnecessary_null_comparison
-                            trailing: items[i].messNum != null
-                                ? Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      Text(items[i].time),
-                                      const SizedBox(
-                                        height: 7,
-                                      ),
-                                      Container(
-                                        decoration: BoxDecoration(
-                                            color: items[i].status
-                                                ? Colors.grey[400]
-                                                : Colors.grey,
-                                            borderRadius:
-                                                BorderRadius.circular(30)),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Text(
-                                            '${items[i].messNum}',
-                                            style: const TextStyle(
-                                                color: Colors.white),
-                                          ),
+              child: Expanded(
+                child: FractionallySizedBox(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: ListView.separated(
+                        itemBuilder: (ctx, i) {
+                          return ListTile(
+                              leading: CircleAvatar(
+                                radius: 28,
+                                backgroundImage: AssetImage(items[i].imgPath),
+                              ),
+                              title: items[i].status
+                                  ? Text(
+                                      items[i].name,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    )
+                                  : Row(
+                                      children: [
+                                        Text(
+                                          items[i].name,
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold),
                                         ),
-                                      )
-                                    ],
-                                  )
-                                : Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      Text(items[i].time),
-                                      const SizedBox(
-                                        height: 7,
-                                      ),
-                                    ],
-                                  ));
-                      },
-                      separatorBuilder: (ctx, i) {
-                        return const Divider();
-                      },
-                      itemCount: items.length),
+                                        Icon(
+                                          Icons.volume_mute,
+                                          size: 18,
+                                          color: Colors.grey[900],
+                                        )
+                                      ],
+                                    ),
+                              subtitle: Text(
+                                items[i].message,
+                                style: const TextStyle(color: Colors.black),
+                              ),
+                              // ignore: unnecessary_null_comparison
+                              trailing: items[i].messNum != null
+                                  ? Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
+                                        Text(items[i].time),
+                                        const SizedBox(
+                                          height: 7,
+                                        ),
+                                        Container(
+                                          decoration: BoxDecoration(
+                                              color: items[i].status
+                                                  ? Colors.grey[400]
+                                                  : Colors.grey,
+                                              borderRadius:
+                                                  BorderRadius.circular(30)),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text(
+                                              '${items[i].messNum}',
+                                              style: const TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    )
+                                  : Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
+                                        Text(items[i].time),
+                                        const SizedBox(
+                                          height: 7,
+                                        ),
+                                      ],
+                                    ));
+                        },
+                        separatorBuilder: (ctx, i) {
+                          return const Divider();
+                        },
+                        itemCount: items.length),
+                  ),
                 ),
               ),
             ),
             ConstrainedBox(
               constraints: const BoxConstraints(maxHeight: 50),
-              child: FractionallySizedBox(
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 10),
-                  child: ListView.separated(
-                      itemBuilder: (ctx, i) {
-                        return ListTile(
-                            leading: CircleAvatar(
-                              radius: 28,
-                              backgroundImage: AssetImage(items[i].imgPath),
-                            ),
-                            title: items[i].status
-                                ? Text(
-                                    items[i].name,
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.bold),
-                                  )
-                                : Row(
-                                    children: [
-                                      Text(
-                                        items[i].name,
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      Icon(
-                                        Icons.volume_mute,
-                                        size: 18,
-                                        color: Colors.grey[900],
-                                      )
-                                    ],
-                                  ),
-                            subtitle: Text(
-                              items[i].message,
-                              style: const TextStyle(color: Colors.black),
-                            ),
-                            // ignore: unnecessary_null_comparison
-                            trailing: items[i].messNum != null
-                                ? Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      Text(items[i].time),
-                                      const SizedBox(
-                                        height: 7,
-                                      ),
-                                      Container(
-                                        decoration: BoxDecoration(
-                                            color: items[i].status
-                                                ? Colors.grey[400]
-                                                : Colors.grey,
-                                            borderRadius:
-                                                BorderRadius.circular(30)),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Text(
-                                            '${items[i].messNum}',
-                                            style: const TextStyle(
-                                                color: Colors.white),
-                                          ),
+              child: Expanded(
+                child: FractionallySizedBox(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: ListView.separated(
+                        itemBuilder: (ctx, i) {
+                          return ListTile(
+                              leading: CircleAvatar(
+                                radius: 28,
+                                backgroundImage: AssetImage(items[i].imgPath),
+                              ),
+                              title: items[i].status
+                                  ? Text(
+                                      items[i].name,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    )
+                                  : Row(
+                                      children: [
+                                        Text(
+                                          items[i].name,
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold),
                                         ),
-                                      )
-                                    ],
-                                  )
-                                : Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      Text(items[i].time),
-                                      const SizedBox(
-                                        height: 7,
-                                      ),
-                                    ],
-                                  ));
-                      },
-                      separatorBuilder: (ctx, i) {
-                        return const Divider();
-                      },
-                      itemCount: items.length),
+                                        Icon(
+                                          Icons.volume_mute,
+                                          size: 18,
+                                          color: Colors.grey[900],
+                                        )
+                                      ],
+                                    ),
+                              subtitle: Text(
+                                items[i].message,
+                                style: const TextStyle(color: Colors.black),
+                              ),
+                              // ignore: unnecessary_null_comparison
+                              trailing: items[i].messNum != null
+                                  ? Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
+                                        Text(items[i].time),
+                                        const SizedBox(
+                                          height: 7,
+                                        ),
+                                        Container(
+                                          decoration: BoxDecoration(
+                                              color: items[i].status
+                                                  ? Colors.grey[400]
+                                                  : Colors.grey,
+                                              borderRadius:
+                                                  BorderRadius.circular(30)),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text(
+                                              '${items[i].messNum}',
+                                              style: const TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    )
+                                  : Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
+                                        Text(items[i].time),
+                                        const SizedBox(
+                                          height: 7,
+                                        ),
+                                      ],
+                                    ));
+                        },
+                        separatorBuilder: (ctx, i) {
+                          return const Divider();
+                        },
+                        itemCount: items.length),
+                  ),
                 ),
               ),
             ),
             ConstrainedBox(
               constraints: const BoxConstraints(maxHeight: 50),
-              child: FractionallySizedBox(
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 10),
-                  child: ListView.separated(
-                      itemBuilder: (ctx, i) {
-                        return ListTile(
-                            leading: CircleAvatar(
-                              radius: 28,
-                              backgroundImage: AssetImage(items[i].imgPath),
-                            ),
-                            title: items[i].status
-                                ? Text(
-                                    items[i].name,
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.bold),
-                                  )
-                                : Row(
-                                    children: [
-                                      Text(
-                                        items[i].name,
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      Icon(
-                                        Icons.volume_mute,
-                                        size: 18,
-                                        color: Colors.grey[900],
-                                      )
-                                    ],
-                                  ),
-                            subtitle: Text(
-                              items[i].message,
-                              style: const TextStyle(color: Colors.black),
-                            ),
-                            // ignore: unnecessary_null_comparison
-                            trailing: items[i].messNum != null
-                                ? Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      Text(items[i].time),
-                                      const SizedBox(
-                                        height: 7,
-                                      ),
-                                      Container(
-                                        decoration: BoxDecoration(
-                                            color: items[i].status
-                                                ? Colors.grey[400]
-                                                : Colors.grey,
-                                            borderRadius:
-                                                BorderRadius.circular(30)),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Text(
-                                            '${items[i].messNum}',
-                                            style: const TextStyle(
-                                                color: Colors.white),
-                                          ),
+              child: Expanded(
+                child: FractionallySizedBox(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: ListView.separated(
+                        itemBuilder: (ctx, i) {
+                          return ListTile(
+                              leading: CircleAvatar(
+                                radius: 28,
+                                backgroundImage: AssetImage(items[i].imgPath),
+                              ),
+                              title: items[i].status
+                                  ? Text(
+                                      items[i].name,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    )
+                                  : Row(
+                                      children: [
+                                        Text(
+                                          items[i].name,
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold),
                                         ),
-                                      )
-                                    ],
-                                  )
-                                : Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      Text(items[i].time),
-                                      const SizedBox(
-                                        height: 7,
-                                      ),
-                                    ],
-                                  ));
-                      },
-                      separatorBuilder: (ctx, i) {
-                        return const Divider();
-                      },
-                      itemCount: items.length),
+                                        Icon(
+                                          Icons.volume_mute,
+                                          size: 18,
+                                          color: Colors.grey[900],
+                                        )
+                                      ],
+                                    ),
+                              subtitle: Text(
+                                items[i].message,
+                                style: const TextStyle(color: Colors.black),
+                              ),
+                              // ignore: unnecessary_null_comparison
+                              trailing: items[i].messNum != null
+                                  ? Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
+                                        Text(items[i].time),
+                                        const SizedBox(
+                                          height: 7,
+                                        ),
+                                        Container(
+                                          decoration: BoxDecoration(
+                                              color: items[i].status
+                                                  ? Colors.grey[400]
+                                                  : Colors.grey,
+                                              borderRadius:
+                                                  BorderRadius.circular(30)),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text(
+                                              '${items[i].messNum}',
+                                              style: const TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    )
+                                  : Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
+                                        Text(items[i].time),
+                                        const SizedBox(
+                                          height: 7,
+                                        ),
+                                      ],
+                                    ));
+                        },
+                        separatorBuilder: (ctx, i) {
+                          return const Divider();
+                        },
+                        itemCount: items.length),
+                  ),
                 ),
               ),
             ),
             ConstrainedBox(
               constraints: const BoxConstraints(maxHeight: 50),
-              child: FractionallySizedBox(
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 10),
-                  child: ListView.separated(
-                      itemBuilder: (ctx, i) {
-                        return ListTile(
-                            leading: CircleAvatar(
-                              radius: 28,
-                              backgroundImage: AssetImage(items[i].imgPath),
-                            ),
-                            title: items[i].status
-                                ? Text(
-                                    items[i].name,
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.bold),
-                                  )
-                                : Row(
-                                    children: [
-                                      Text(
-                                        items[i].name,
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      Icon(
-                                        Icons.volume_mute,
-                                        size: 18,
-                                        color: Colors.grey[900],
-                                      )
-                                    ],
-                                  ),
-                            subtitle: Text(
-                              items[i].message,
-                              style: const TextStyle(color: Colors.black),
-                            ),
-                            // ignore: unnecessary_null_comparison
-                            trailing: items[i].messNum != null
-                                ? Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      Text(items[i].time),
-                                      const SizedBox(
-                                        height: 7,
-                                      ),
-                                      Container(
-                                        decoration: BoxDecoration(
-                                            color: items[i].status
-                                                ? Colors.grey[400]
-                                                : Colors.grey,
-                                            borderRadius:
-                                                BorderRadius.circular(30)),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Text(
-                                            '${items[i].messNum}',
-                                            style: const TextStyle(
-                                                color: Colors.white),
-                                          ),
+              child: Expanded(
+                child: FractionallySizedBox(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: ListView.separated(
+                        itemBuilder: (ctx, i) {
+                          return ListTile(
+                              leading: CircleAvatar(
+                                radius: 28,
+                                backgroundImage: AssetImage(items[i].imgPath),
+                              ),
+                              title: items[i].status
+                                  ? Text(
+                                      items[i].name,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    )
+                                  : Row(
+                                      children: [
+                                        Text(
+                                          items[i].name,
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold),
                                         ),
-                                      )
-                                    ],
-                                  )
-                                : Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      Text(items[i].time),
-                                      const SizedBox(
-                                        height: 7,
-                                      ),
-                                    ],
-                                  ));
-                      },
-                      separatorBuilder: (ctx, i) {
-                        return const Divider();
-                      },
-                      itemCount: items.length),
+                                        Icon(
+                                          Icons.volume_mute,
+                                          size: 18,
+                                          color: Colors.grey[900],
+                                        )
+                                      ],
+                                    ),
+                              subtitle: Text(
+                                items[i].message,
+                                style: const TextStyle(color: Colors.black),
+                              ),
+                              // ignore: unnecessary_null_comparison
+                              trailing: items[i].messNum != null
+                                  ? Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
+                                        Text(items[i].time),
+                                        const SizedBox(
+                                          height: 7,
+                                        ),
+                                        Container(
+                                          decoration: BoxDecoration(
+                                              color: items[i].status
+                                                  ? Colors.grey[400]
+                                                  : Colors.grey,
+                                              borderRadius:
+                                                  BorderRadius.circular(30)),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text(
+                                              '${items[i].messNum}',
+                                              style: const TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    )
+                                  : Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
+                                        Text(items[i].time),
+                                        const SizedBox(
+                                          height: 7,
+                                        ),
+                                      ],
+                                    ));
+                        },
+                        separatorBuilder: (ctx, i) {
+                          return const Divider();
+                        },
+                        itemCount: items.length),
+                  ),
                 ),
               ),
             ),
             ConstrainedBox(
               constraints: const BoxConstraints(maxHeight: 50),
-              child: FractionallySizedBox(
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 10),
-                  child: ListView.separated(
-                      itemBuilder: (ctx, i) {
-                        return ListTile(
-                            leading: CircleAvatar(
-                              radius: 28,
-                              backgroundImage: AssetImage(items[i].imgPath),
-                            ),
-                            title: items[i].status
-                                ? Text(
-                                    items[i].name,
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.bold),
-                                  )
-                                : Row(
-                                    children: [
-                                      Text(
-                                        items[i].name,
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      Icon(
-                                        Icons.volume_mute,
-                                        size: 18,
-                                        color: Colors.grey[900],
-                                      )
-                                    ],
-                                  ),
-                            subtitle: Text(
-                              items[i].message,
-                              style: const TextStyle(color: Colors.black),
-                            ),
-                            // ignore: unnecessary_null_comparison
-                            trailing: items[i].messNum != null
-                                ? Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      Text(items[i].time),
-                                      const SizedBox(
-                                        height: 7,
-                                      ),
-                                      Container(
-                                        decoration: BoxDecoration(
-                                            color: items[i].status
-                                                ? Colors.grey[400]
-                                                : Colors.grey,
-                                            borderRadius:
-                                                BorderRadius.circular(30)),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Text(
-                                            '${items[i].messNum}',
-                                            style: const TextStyle(
-                                                color: Colors.white),
-                                          ),
+              child: Expanded(
+                child: FractionallySizedBox(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: ListView.separated(
+                        itemBuilder: (ctx, i) {
+                          return ListTile(
+                              leading: CircleAvatar(
+                                radius: 28,
+                                backgroundImage: AssetImage(items[i].imgPath),
+                              ),
+                              title: items[i].status
+                                  ? Text(
+                                      items[i].name,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    )
+                                  : Row(
+                                      children: [
+                                        Text(
+                                          items[i].name,
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold),
                                         ),
-                                      )
-                                    ],
-                                  )
-                                : Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      Text(items[i].time),
-                                      const SizedBox(
-                                        height: 7,
-                                      ),
-                                    ],
-                                  ));
-                      },
-                      separatorBuilder: (ctx, i) {
-                        return const Divider();
-                      },
-                      itemCount: items.length),
+                                        Icon(
+                                          Icons.volume_mute,
+                                          size: 18,
+                                          color: Colors.grey[900],
+                                        )
+                                      ],
+                                    ),
+                              subtitle: Text(
+                                items[i].message,
+                                style: const TextStyle(color: Colors.black),
+                              ),
+                              // ignore: unnecessary_null_comparison
+                              trailing: items[i].messNum != null
+                                  ? Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
+                                        Text(items[i].time),
+                                        const SizedBox(
+                                          height: 7,
+                                        ),
+                                        Container(
+                                          decoration: BoxDecoration(
+                                              color: items[i].status
+                                                  ? Colors.grey[400]
+                                                  : Colors.grey,
+                                              borderRadius:
+                                                  BorderRadius.circular(30)),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text(
+                                              '${items[i].messNum}',
+                                              style: const TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    )
+                                  : Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
+                                        Text(items[i].time),
+                                        const SizedBox(
+                                          height: 7,
+                                        ),
+                                      ],
+                                    ));
+                        },
+                        separatorBuilder: (ctx, i) {
+                          return const Divider();
+                        },
+                        itemCount: items.length),
+                  ),
                 ),
               ),
             ),
             ConstrainedBox(
               constraints: const BoxConstraints(maxHeight: 50),
-              child: FractionallySizedBox(
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 10),
-                  child: ListView.separated(
-                      itemBuilder: (ctx, i) {
-                        return ListTile(
-                            leading: CircleAvatar(
-                              radius: 28,
-                              backgroundImage: AssetImage(items[i].imgPath),
-                            ),
-                            title: items[i].status
-                                ? Text(
-                                    items[i].name,
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.bold),
-                                  )
-                                : Row(
-                                    children: [
-                                      Text(
-                                        items[i].name,
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      Icon(
-                                        Icons.volume_mute,
-                                        size: 18,
-                                        color: Colors.grey[900],
-                                      )
-                                    ],
-                                  ),
-                            subtitle: Text(
-                              items[i].message,
-                              style: const TextStyle(color: Colors.black),
-                            ),
-                            // ignore: unnecessary_null_comparison
-                            trailing: items[i].messNum != null
-                                ? Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      Text(items[i].time),
-                                      const SizedBox(
-                                        height: 7,
-                                      ),
-                                      Container(
-                                        decoration: BoxDecoration(
-                                            color: items[i].status
-                                                ? Colors.grey[400]
-                                                : Colors.grey,
-                                            borderRadius:
-                                                BorderRadius.circular(30)),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Text(
-                                            '${items[i].messNum}',
-                                            style: const TextStyle(
-                                                color: Colors.white),
-                                          ),
+              child: Expanded(
+                child: FractionallySizedBox(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: ListView.separated(
+                        itemBuilder: (ctx, i) {
+                          return ListTile(
+                              leading: CircleAvatar(
+                                radius: 28,
+                                backgroundImage: AssetImage(items[i].imgPath),
+                              ),
+                              title: items[i].status
+                                  ? Text(
+                                      items[i].name,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    )
+                                  : Row(
+                                      children: [
+                                        Text(
+                                          items[i].name,
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold),
                                         ),
-                                      )
-                                    ],
-                                  )
-                                : Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      Text(items[i].time),
-                                      const SizedBox(
-                                        height: 7,
-                                      ),
-                                    ],
-                                  ));
-                      },
-                      separatorBuilder: (ctx, i) {
-                        return const Divider();
-                      },
-                      itemCount: items.length),
+                                        Icon(
+                                          Icons.volume_mute,
+                                          size: 18,
+                                          color: Colors.grey[900],
+                                        )
+                                      ],
+                                    ),
+                              subtitle: Text(
+                                items[i].message,
+                                style: const TextStyle(color: Colors.black),
+                              ),
+                              // ignore: unnecessary_null_comparison
+                              trailing: items[i].messNum != null
+                                  ? Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
+                                        Text(items[i].time),
+                                        const SizedBox(
+                                          height: 7,
+                                        ),
+                                        Container(
+                                          decoration: BoxDecoration(
+                                              color: items[i].status
+                                                  ? Colors.grey[400]
+                                                  : Colors.grey,
+                                              borderRadius:
+                                                  BorderRadius.circular(30)),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text(
+                                              '${items[i].messNum}',
+                                              style: const TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    )
+                                  : Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
+                                        Text(items[i].time),
+                                        const SizedBox(
+                                          height: 7,
+                                        ),
+                                      ],
+                                    ));
+                        },
+                        separatorBuilder: (ctx, i) {
+                          return const Divider();
+                        },
+                        itemCount: items.length),
+                  ),
                 ),
               ),
             ),
-            _children[_currentIndex],
+            // _children[_currentIndex],
           ]),
           bottomNavigationBar: BottomNavigationBar(
             onTap: onTabTapped,
@@ -740,35 +765,33 @@ class _MainpageState extends State<Mainpage> {
             // ignore: prefer_const_literals_to_create_immutables
             items: [
               const BottomNavigationBarItem(
-                icon: Icon(Icons.storage),
-                label: 'All Chats',
-              ),
+                  icon: Icon(Icons.storage), label: ' '),
               const BottomNavigationBarItem(
-                icon: Icon(Icons.timer),
-                label: 'Contacts',
-              ),
+                  icon: Icon(Icons.person_outline_outlined), label: ' '),
               const BottomNavigationBarItem(
-                icon: Icon(Icons.pie_chart_outline),
-                label: 'Groups',
-              ),
+                  icon: Icon(Icons.people_outline_outlined), label: ' '),
               const BottomNavigationBarItem(
-                icon: Icon(Icons.supervisor_account),
-                label: 'Unread ',
-              ),
+                  icon: Icon(Icons.wechat_outlined), label: ' '),
               const BottomNavigationBarItem(
-                icon: Icon(Icons.storage),
-                label: 'Channel ',
-              ),
+                  icon: Icon(Icons.volume_down_alt), label: ' '),
               const BottomNavigationBarItem(
-                icon: Icon(Icons.storage),
-                label: 'Bots ',
-              ),
+                  icon: Icon(Icons.balcony_outlined), label: ' '),
             ],
           ),
           floatingActionButton: FloatingActionButton(
             backgroundColor: Colors.teal[500],
-            onPressed: () {},
-            child: const Icon(Icons.create),
+            onPressed: () => setState(() {
+              if (fabIconNumber == 0) {
+                fab = const Icon(
+                  Icons.person_add,
+                );
+                fabIconNumber = 1;
+              } else {
+                fab = const Icon(Icons.create);
+                fabIconNumber = 0;
+              }
+            }),
+            child: fab,
           ),
         ),
       );
